@@ -4,7 +4,8 @@
 
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import Button from '../Button'
+// require the component at runtime to avoid Jest parsing TSX files with unexpected token in some environments
+const Button = require('../Button').default
 
 test('renders button with children', () => {
   // avoid JSX in test file to bypass transform edge-cases

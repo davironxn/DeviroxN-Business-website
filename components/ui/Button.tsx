@@ -10,5 +10,5 @@ export default function Button({ children, variant = 'primary' }: { children: Re
       : variant === 'outline'
       ? base + 'border border-slate-200 text-slate-700 bg-white'
       : base + 'bg-transparent text-slate-700'
-  return <button className={classes}>{children}</button>
+  return React.createElement('button', { className: classes }, children)
 }

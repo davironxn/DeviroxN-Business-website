@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
-import bcrypt from 'bcrypt'
+// use our bcryptjs wrapper to avoid native bindings during build
+import { hashPassword } from '@/lib/hash'
 import { randomBytes } from 'crypto'
 import { sendVerificationEmail, sendAdminNotification } from '@/lib/mailer'
 
@@ -7,7 +8,7 @@ export async function registerUser({ name, email, password }: { name?: string; e
   const existing = await prisma.user.findUnique({ where: { email } })
   if (existing) throw new Error('User already exists')
 
-  const hashed = await bcrypt.hash(password, 10)
+  const hashed = await hashPassword(password, 10)
   const user = await prisma.user.create({ data: { name, email, hashedPassword: hashed, isApproved: false } })
 
   // Create single-use verification token

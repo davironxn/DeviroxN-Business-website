@@ -4,7 +4,8 @@ import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from './prisma'
-import bcrypt from 'bcrypt'
+// use bcryptjs wrapper for hashing/compare to avoid native bindings
+import { comparePassword } from '@/lib/hash'
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma as any),
@@ -21,7 +22,7 @@ export const authOptions = {
         if (!credentials?.email || !credentials?.password) return null
         const user = await prisma.user.findUnique({ where: { email: credentials.email } })
         if (!user || !user.hashedPassword) return null
-        const isValid = await bcrypt.compare(credentials.password, user.hashedPassword)
+    const isValid = await comparePassword(credentials.password, user.hashedPassword)
         if (!isValid) return null
         // NextAuth expects an object with id and email at minimum
         return { id: user.id, email: user.email, name: user.name, role: user.role }
@@ -33,7 +34,7 @@ export const authOptions = {
   },
   callbacks: {
     // When a user signs in, ensure they're approved (admin flow) and attach role
-    async signIn({ user, account, profile }) {
+  async signIn({ user, account, profile }: any) {
       // look up user from prisma to get isApproved flag and role
       try {
         const dbUser = await prisma.user.findUnique({ where: { email: user.email! } })

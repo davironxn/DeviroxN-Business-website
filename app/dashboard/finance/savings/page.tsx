@@ -16,7 +16,7 @@ export default async function SavingsPage() {
       <h2 className="text-xl font-bold">Your Savings</h2>
       <ul className="mt-4 space-y-2">
         {savings.map(s => (
-          <li key={s.id} className="p-3 bg-white rounded shadow">{s.name || 'Account'} — {s.balance}</li>
+          <li key={s.id} className="p-3 bg-white rounded shadow">Account — {String(s.balance)}</li>
         ))}
       </ul>
     </DashboardLayout>

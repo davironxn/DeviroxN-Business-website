@@ -27,7 +27,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   return info
 }
 
-export async function sendAdminNotification(user: { id: string; email: string; name?: string }) {
+export async function sendAdminNotification(user: { id: string; email: string; name?: string | null }) {
   const adminList = (process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim()).filter(Boolean)
   if (adminList.length === 0) return
   const subject = `New user registration: ${user.email}`

@@ -1,11 +1,6 @@
 import React from 'react'
 import prisma from '@/lib/prisma'
-
-// Example server action for creating a saving record (App Router server action)
-export async function createSavingAction(userId: string) {
-  'use server'
-  return await prisma.savings.create({ data: { userId, balance: 0 } })
-}
+import { createSavingAction } from './actions'
 
 export default async function StaffFinance() {
   return (

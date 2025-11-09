@@ -16,7 +16,7 @@ export default async function LoansPage() {
       <h2 className="text-xl font-bold">Your Loans</h2>
       <ul className="mt-4 space-y-2">
         {loans.map(l => (
-          <li key={l.id} className="p-3 bg-white rounded shadow">Amount: {l.amount} — Status: {l.status}</li>
+          <li key={l.id} className="p-3 bg-white rounded shadow">Amount: {String(l.amount)} — Status: {l.status}</li>
         ))}
       </ul>
     </DashboardLayout>
